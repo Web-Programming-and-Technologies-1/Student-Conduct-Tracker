@@ -1,39 +1,30 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
 
-class User(db.Model):
-    staffId = db.Column(db.Integer, primary_key=True)
+
+class Student(db.Model):
+    studentId = db.Column(db.Integer, primary_key=True)
     firstname =  db.Column(db.String(50), nullable=False)
     lastname =  db.Column(db.String(50), nullable=False)
     username =  db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
+    karmaScore = db.Column(db.Integer)
 
-    def __init__(self, firstname, lastname, username, email, password):
+    def __init__(self, firstname, lastname, username, email, karmaScore):
         self.firstname = firstname
         self.lastname = lastname
         self.username = username
         self.email = email
-        self.set_password(password)
+        self.karmaScore = karmaScore
 
     def toDict(self):
         return{
-            'id': self.staffId,
+            'id': self.studentId,
             'firstname': self.firstname,
             'lastname': self.lastname,
             'username': self.username,
             'email': self.email,
-            'password': self.password
+            'karmascore': self.karmaScore
         }
 
-    def set_password(self, password):
-        """Create hashed password."""
-        self.password = generate_password_hash(password, method='sha256')
     
-    def check_password(self, password):
-        """Check hashed password."""
-        return check_password_hash(self.password, password)
-
-  
-
-

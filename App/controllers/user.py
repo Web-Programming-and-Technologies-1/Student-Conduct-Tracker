@@ -1,7 +1,7 @@
 from App.models import User
 from App.database import db
 
-
+# create function from class diagram 
 def get_all_users():
     return User.query.all()
 

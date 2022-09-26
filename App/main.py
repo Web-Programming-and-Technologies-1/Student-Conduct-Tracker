@@ -62,3 +62,26 @@ def create_app(config={}):
 
 app = create_app()
 migrate = get_migrate(app)
+
+@app.route('/')
+def index():
+  return render_template('index.html')
+
+@app.route('/signup', methods=['GET'])
+def signup():
+  form = SignUp() # create form object
+  return render_template('signup.html', form=form)
+
+@app.route('/signup', methods=['POST'])
+def signupAction():
+  form = SignUp() # create form object
+  if form.validate_on_submit():
+    data = request.form # get data from form submission
+    newuser = User(firstname=data['fname'], lastname=data['lname'], username=data['username'], email=data['email']) # create user object
+    newuser.set_password(data['password']) # set password
+    db.session.add(newuser) # save new user
+    db.session.commit()
+    flash('Account Created!')# send message
+    return redirect(url_for('index'))# redirect to login page
+  flash('Error invalid input!')
+  return redirect(url_for('signup'))

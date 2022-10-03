@@ -3,8 +3,8 @@ from App.database import db
 from sqlalchemy.exc import IntegrityError
 
 # Create operations
-def createReview(review, studentId, userId):
-    review = Review(review = review, studentId = studentId, userId = userId)
+def createReview(reviewDetails, studentId, userId):
+    review = Review(reviewDetails = reviewDetails, studentId = studentId, userId = userId)
     try:
         db.session.add(review)
         db.session.commit()
@@ -20,26 +20,26 @@ def getAllReviews():
     except:
         return 'ERROR: Failed to find all the reviews'
 
-def getReview(id, userId):
+def getReview(reviewtId, userId):
     try:
-        return Review.query.filter_by(id=id, userId=userId).first()
+        return Review.query.filter_by(reviewtId=reviewtId, userId=userId).first()
     except:
         return 'ERROR: Failed to get the review'
 
 # Update operations
-def updateReview(id, review, userId):
+def updateReview(reviewtId, reviewDetails, userId):
     try:
-        newReview = getReview(id, userId)
-        newReview.review = review,
+        newReview = getReview(reviewtId, userId)
+        newReview.reviewDetails = reviewDetails,
         db.session.add(newReview)
         db.session.commit()
     except:
         return 'ERROR: Failed to update the review'
 
 # Delete operations
-def delete_review(id, userId):
+def deleteReview(reviewtId, userId):
     try:
-        review = getReview(id, userId)
+        review = getReview(reviewtId, userId)
         db.session.delete(review)
         db.session.commit()
     except:

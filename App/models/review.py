@@ -5,8 +5,10 @@ from App.database import db
 class Review(db.Model):
     reviewtId = db.Column(db.Integer, primary_key=True)
     reviewDetails =  db.Column(db.String(50), nullable=False)
-    upvote =  db.Column(db.Integer )
+    upvote =  db.Column(db.Integer)
     downvote =  db.Column(db.Integer)
+    studentId = db.Column(db.Integer, db.ForeignKey('student.studentId'))
+    userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
    
     def __init__(self, reviewDetails, upvote, downvote):
         self.reviewDetails = reviewDetails

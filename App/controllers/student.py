@@ -49,3 +49,4 @@ def deleteStudent(studentId, userId):
     except:
         return'ERROR: Failed to delete the student'
 
+# Karma score

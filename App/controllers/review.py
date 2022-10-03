@@ -44,3 +44,4 @@ def deleteReview(reviewtId, userId):
         db.session.commit()
     except:
         return'ERROR: Failed to delete the review'
+

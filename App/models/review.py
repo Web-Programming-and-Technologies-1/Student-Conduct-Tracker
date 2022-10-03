@@ -5,16 +5,15 @@ from App.database import db
 class Review(db.Model):
     reviewtId = db.Column(db.Integer, primary_key=True)
     reviewDetails =  db.Column(db.String(50), nullable=False)
-    upvote =  db.Column(db.Integer)
-    downvote =  db.Column(db.Integer)
+    upvoteScore =  db.Column(db.Integer)
+    downvoteScore =  db.Column(db.Integer)
     studentId = db.Column(db.Integer, db.ForeignKey('student.studentId'))
     userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
    
-    def __init__(self, reviewDetails, upvote, downvote):
+    def __init__(self, reviewDetails):
         self.reviewDetails = reviewDetails
-        self.upvote = upvote
-        self.down = downvote
-
+        self.upvote = 0
+        self.down = 0
 
     def toDict(self):
         return{

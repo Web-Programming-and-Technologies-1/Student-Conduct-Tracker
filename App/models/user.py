@@ -8,7 +8,7 @@ class User(db.Model):
     lastname =  db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    staff = db.relationship('Staff', backref='user', lazy=True, cascade="all, delete-orphan")
+    review = db.relationship('Review', backref='user', lazy=True,cascade="all, delete-orphan" )
 
     def __init__(self, firstname, lastname, username, email, password):
         self.firstname = firstname
@@ -23,8 +23,7 @@ class User(db.Model):
             'firstname': self.firstname,
             'lastname': self.lastname,
             'username': self.username,
-            'email': self.email,
-            'password': self.password
+            'email': self.email
         }
 
     def set_password(self, password):

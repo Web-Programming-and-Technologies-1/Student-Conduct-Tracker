@@ -8,14 +8,15 @@ class Student(db.Model):
     lastname =  db.Column(db.String(50), nullable=False)
     username =  db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    karmaScore = db.Column(db.Integer)
+    karmaScore = db.Column(db.Integer, nullable=False)
+    review = db.relationship('Review', backref='student',lazy=True,cascade="all, delete-orphan")
 
-    def __init__(self, firstname, lastname, username, email, karmaScore):
+    def __init__(self, firstname, lastname, username, email):
         self.firstname = firstname
         self.lastname = lastname
         self.username = username
         self.email = email
-        self.karmaScore = karmaScore
+        self.karmaScore = 0.0
 
     def toDict(self):
         return{

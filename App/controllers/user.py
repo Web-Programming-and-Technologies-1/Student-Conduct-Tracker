@@ -1,21 +1,35 @@
 from App.models import User
 from App.database import db
+from sqlalchemy.exc import IntegrityError
 
-# create function from class diagram 
+# Added error handling to the functions below provided within the MVC template
 def get_all_users():
-    return User.query.all()
+    try:
+        return User.query.all()
+    except:
+        return 'ERROR: Failed to get all users'
+
 
 def create_user(username, password):
-    newuser = User(username=username, password=password)
-    db.session.add(newuser)
-    db.session.commit()
+    try:
+        newuser = User(username=username, password=password)
+        db.session.add(newuser)
+        db.session.commit()
+    except:
+        return 'ERROR: Failed to create new user'
 
 def get_all_users_json():
-    users = User.query.all()
-    if not users:
-        return []
-    users = [user.toDict() for user in users]
-    return users
+    try:
+        users = User.query.all()
+        if not users:
+            return []
+        users = [user.toDict() for user in users]
+        return users
+    except:
+        return 'ERROR: Failed to get all users in JSON Format'
 
 def get_all_users():
-    return User.query.all()
+    try:
+        return User.query.all()
+    except:
+        return'ERROR: Failed to all users'

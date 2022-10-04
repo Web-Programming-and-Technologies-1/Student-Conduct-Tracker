@@ -56,10 +56,13 @@ def getKarma(id): #id is the studentID
 
 #add student  NEED TO FIX
 @user_views.route('/add', methods=['POST'])
-def addStud(firstname, lastname, username, email):
-    student = createStudent(firstname, lastname, username, email)
-    result = getAllStudents()
-    return json.dump(result)
+def addStud():
+    #student = createStudent(firstname, lastname, username, email)
+    #result = getAllStudents()
+    #return json.dump(result)
+    data = request.json
+    createStudent(data['firstname'], data['lastname'], data['username'], data['email'])
+    return 'Created'
 
 #update student NEED TO FIX
 @user_views.route('/update', methods=['POST'])

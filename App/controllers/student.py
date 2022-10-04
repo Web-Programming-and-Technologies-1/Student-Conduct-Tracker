@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 # Create operations
 def createStudent(firstname, lastname, username, email ):
-    student = Student(firstName=firstName, lastName=lastName, username = username, email=email)
+    student = Student(firstname=firstname, lastname=lastname, username = username, email=email)
     try:
         db.session.add(student)
         db.session.commit()

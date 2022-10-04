@@ -45,3 +45,23 @@ def deleteReview(reviewtId, userId):
     except:
         return'ERROR: Failed to delete the review'
 
+# Review upvote logic
+def upvoteReview(reviewtId, studenId):
+    try:
+        review = Review.query.filter_by(reviewtId=reviewtId).first()
+        review.upvoteScore = review.upvoteScore + 1
+        # karmaScore = increaseKarmaScore (studentId)
+        db.session.add(review)
+        db.session.commit()
+    except:
+        return 'ERROR: Failed to increase the review votes'
+
+# Review downvote logic
+def downvote_review(reviewtId):
+    try:
+        review = Review.query.filter_by(reviewtId=reviewtId).first()
+        review.downvoteScore = review.downvoteScore + 1
+        db.session.add(review)
+        db.session.commit()
+    except:
+        return 'ERROR: Failed to decrease the review votes'

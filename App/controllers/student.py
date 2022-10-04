@@ -3,8 +3,8 @@ from App.database import db
 from sqlalchemy.exc import IntegrityError
 
 # Create operations
-def createStudent(firstname, lastname, username, email ):
-    student = Student(firstname=firstname, lastname=lastname, username = username, email=email)
+def createStudent(studentId, firstname, lastname, username, email ):
+    student = Student(studentId=studentId, firstname=firstname, lastname=lastname, username = username, email=email)
     try:
         db.session.add(student)
         db.session.commit()

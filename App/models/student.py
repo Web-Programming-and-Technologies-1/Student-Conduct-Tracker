@@ -11,7 +11,8 @@ class Student(db.Model):
     karmaScore = db.Column(db.Integer, nullable=False)
     review = db.relationship('Review', backref='student',lazy=True,cascade="all, delete-orphan")
 
-    def __init__(self, firstname, lastname, username, email):
+    def __init__(self, studentId, firstname, lastname, username, email):
+        self.studentId = studentId
         self.firstname = firstname
         self.lastname = lastname
         self.username = username

@@ -49,4 +49,22 @@ def deleteStudent(studentId, userId):
     except:
         return'ERROR: Failed to delete the student'
 
-# Karma score
+# increase Karma score logic
+def increaseKarmaScore (studentId):
+    try:
+        student = Student.query.filter_by(studenId=studenId).first()
+        student.karma = student.karma + 1
+        db.session.add(student)
+        db.session.commit()
+    except:
+        return 'ERROR: Failed to increase karma score'
+
+# decrease karma score logic
+def decreaseKarmaScore(studenId):
+    try:
+        student = Student.query.filter_by(studenId=studenId).first()
+        student.karma = student.karma - 1
+        db.session.add(student)
+        db.session.commit()
+    except:
+        return 'ERROR: Failed to decrease karma score'

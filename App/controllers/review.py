@@ -46,7 +46,7 @@ def deleteReview(reviewtId, userId):
         return'ERROR: Failed to delete the review'
 
 # Review upvote logic
-def upvoteReview(reviewtId, studenId):
+def upvoteReview(reviewtId, studentId):
     try:
         review = Review.query.filter_by(reviewtId=reviewtId).first()
         review.upvoteScore = review.upvoteScore + 1

@@ -20,16 +20,16 @@ def getAllReviews():
     except:
         return 'ERROR: Failed to find all the reviews'
 
-def getReview(reviewtId, userId):
+def getReview(reviewId, userId):
     try:
-        return Review.query.filter_by(reviewtId=reviewtId, userId=userId).first()
+        return Review.query.filter_by(reviewId=reviewId, userId=userId).first()
     except:
         return 'ERROR: Failed to get the review'
 
 # Update operations
-def updateReview(reviewtId, reviewDetails, userId):
+def updateReview(reviewId, reviewDetails, userId):
     try:
-        newReview = getReview(reviewtId, userId)
+        newReview = getReview(reviewId, userId)
         newReview.reviewDetails = reviewDetails,
         db.session.add(newReview)
         db.session.commit()
@@ -37,18 +37,18 @@ def updateReview(reviewtId, reviewDetails, userId):
         return 'ERROR: Failed to update the review'
 
 # Delete operations
-def deleteReview(reviewtId, userId):
+def deleteReview(reviewId, userId):
     try:
-        review = getReview(reviewtId, userId)
+        review = getReview(reviewId, userId)
         db.session.delete(review)
         db.session.commit()
     except:
         return'ERROR: Failed to delete the review'
 
 # Review upvote logic
-def upvoteReview(reviewtId, studentId):
+def upvoteReview(reviewId):
     try:
-        review = Review.query.filter_by(reviewtId=reviewtId).first()
+        review = Review.query.filter_by(reviewId=reviewId).first()
         review.upvoteScore = review.upvoteScore + 1
         # karmaScore = increaseKarmaScore (studentId)
         db.session.add(review)
@@ -57,9 +57,9 @@ def upvoteReview(reviewtId, studentId):
         return 'ERROR: Failed to increase the review votes'
 
 # Review downvote logic
-def downvote_review(reviewtId):
+def downvote_review(reviewId):
     try:
-        review = Review.query.filter_by(reviewtId=reviewtId).first()
+        review = Review.query.filter_by(reviewId=reviewId).first()
         review.downvoteScore = review.downvoteScore + 1
         db.session.add(review)
         db.session.commit()

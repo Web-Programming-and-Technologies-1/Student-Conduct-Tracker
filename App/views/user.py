@@ -66,10 +66,9 @@ def addStud():
 
 #update student NEED TO FIX
 @user_views.route('/update', methods=['POST'])
-def updateStud(studentId, firstname, lastname, username, email):
-    student = updateStudent(studentId, firstname, lastname, username, email)
-    result = getStudent(studentId)
-    return json.dump(result)
+def updateStud():
+    data = request.json
+    updateStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
 
 #add a review NEED TO FIX
 @user_views.route('/addreview', methods=['POST'])

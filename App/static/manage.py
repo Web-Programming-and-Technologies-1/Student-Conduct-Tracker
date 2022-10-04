@@ -3,7 +3,7 @@ from App.database import db
 from sqlalchemy.exc import IntegrityError
 
 @manager.command
-def make_student():
+def make_user():
     Joshua = Student(studentId="816", firstname="Joshua", lastname="Ali", username = "joshuaali", email="joshuaali@hotmail.com")
     
         db.session.add(Joshua)

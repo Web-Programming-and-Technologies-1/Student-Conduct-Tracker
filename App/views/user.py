@@ -62,7 +62,7 @@ def addStud():
     #return json.dump(result)
     data = request.json
     createStudent(data['firstname'], data['lastname'], data['username'], data['email'])
-    return 'Created'
+
 
 #update student NEED TO FIX
 @user_views.route('/update', methods=['POST'])

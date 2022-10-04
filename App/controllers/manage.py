@@ -9,4 +9,7 @@ def make_student():
         db.session.add(Joshua)
         db.session.commit()
         print("users created")
+
+if __name__ == "__main__":
+    manager.run()
     

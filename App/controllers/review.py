@@ -57,7 +57,7 @@ def upvoteReview(reviewId):
         return 'ERROR: Failed to increase the review votes'
 
 # Review downvote logic
-def downvote_review(reviewId):
+def downvoteReview(reviewId):
     try:
         review = Review.query.filter_by(reviewId=reviewId).first()
         review.downvoteScore = review.downvoteScore + 1

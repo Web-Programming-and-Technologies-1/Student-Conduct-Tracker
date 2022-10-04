@@ -52,7 +52,7 @@ def deleteStudent(studentId, userId):
 # increase Karma score logic
 def increaseKarmaScore (studentId):
     try:
-        student = Student.query.filter_by(studenId=studenId).first()
+        student = Student.query.filter_by(studentId=studentId).first()
         student.karma = student.karma + 1
         db.session.add(student)
         db.session.commit()
@@ -60,9 +60,9 @@ def increaseKarmaScore (studentId):
         return 'ERROR: Failed to increase karma score'
 
 # decrease karma score logic
-def decreaseKarmaScore(studenId):
+def decreaseKarmaScore(studentId):
     try:
-        student = Student.query.filter_by(studenId=studenId).first()
+        student = Student.query.filter_by(studentId=studentId).first()
         student.karma = student.karma - 1
         db.session.add(student)
         db.session.commit()

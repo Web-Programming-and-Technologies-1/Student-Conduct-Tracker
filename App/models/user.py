@@ -20,7 +20,7 @@ class User(db.Model):
 
     def toDict(self):
         return{
-            'id': self.staffId,
+            'id': self.userId,
             'firstname': self.firstname,
             'lastname': self.lastname,
             'username': self.username,

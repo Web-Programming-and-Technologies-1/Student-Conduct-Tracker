@@ -115,7 +115,7 @@ def updateStud(id):
 def createRev():
   try:
       data = request.json
-      review = createReview(data["reviewDetails"], data["studentId"], data["userId"])
+      review = createReview(data["reviewDetails"], data["studentId"], data["id"])
       result = getAllReviews()
       return json.dump(result),200
   except:

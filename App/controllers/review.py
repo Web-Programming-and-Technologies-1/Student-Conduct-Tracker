@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 # Create operations
 def createReview(reviewDetails, studentId, userId):
-    review = Review(reviewDetails = reviewDetails, studentId = studentId, userId = userId)
+    review = Review(reviewDetails = reviewDetails, studentId = studentId, id = userId)
     try:
         db.session.add(review)
         db.session.commit()
@@ -22,7 +22,7 @@ def getAllReviews():
 
 def getReview(reviewId, userId):
     try:
-        return Review.query.filter_by(reviewId=reviewId, userId=userId).first()
+        return Review.query.filter_by(reviewId=reviewId, id=userId).first()
     except:
         return 'ERROR: Failed to get the review'
 

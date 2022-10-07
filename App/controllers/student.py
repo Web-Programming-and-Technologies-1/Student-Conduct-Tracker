@@ -23,7 +23,8 @@ def getAllStudents():
 
 def getStudent(studentId):
     try:
-        return Student.query.filter_by(studentId=studentId).first()
+        student = Student.query.filter_by(studentId=studentId).first()
+        return student
     except:
         return 'ERROR: Failed to get the student'
 

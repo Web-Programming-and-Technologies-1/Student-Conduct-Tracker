@@ -75,7 +75,7 @@ def getallstudents():
 def searchStudent(id): #id is the studentID
   try:
     student = getStudent(id)
-    return json.dumps(student),202
+    return json.dumps(student.toDict()),202
   except:
     return 'ERROR: API Failed to search for the student', 404
 
@@ -105,8 +105,9 @@ def addStud():
 def updateStud(id):
   try: 
     data = request.json
-    updateStudent(id, data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
-    return'PASS: Student updated',200
+    student = updateStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
+    ##return 'PASS: Student updated',200
+    return json.dumps(student.toDict()),202
   except:
     return'ERROR: API Failed to update student', 404
 
@@ -120,3 +121,18 @@ def createRev():
       return json.dump(result),200
   except:
     return'ERROR: API Failed to create new review', 404
+
+@user_views.route('/users', methods=['POST'])
+def addUser():
+  try:
+    data = request.json
+    create_user(data['username'],data['password'])
+    return 'PASS: User Created',200
+  except:
+      return'ERROR: API Failed to create new user', 404  
+
+@user_views.route('/viewusers', methods=['GET'])
+def getUser():
+  result = []
+  user = get_all_users_json()
+  return user 

@@ -3,7 +3,7 @@ from App.database import db
 
 
 class Review(db.Model):
-    reviewtId = db.Column(db.Integer, primary_key=True)
+    reviewId = db.Column(db.Integer, primary_key=True)
     reviewDetails =  db.Column(db.String(50), nullable=False)
     upvoteScore =  db.Column(db.Integer)
     downvoteScore =  db.Column(db.Integer)
@@ -17,7 +17,7 @@ class Review(db.Model):
 
     def toDict(self):
         return{
-            'id': self.reviewtId,
+            'id': self.reviewId,
             'reviewDetails': self.reviewDetails,
             'upvote': self.upvote,
             'downvote': self.downvote,

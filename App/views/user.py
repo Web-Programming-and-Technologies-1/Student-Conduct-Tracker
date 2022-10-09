@@ -54,9 +54,20 @@ def static_user_page():
     return'ERROR: API Failed to render static-user.html',404
 
 
+@user_views.route('/')
+def index():
+  user1 = User(userId=1, firstname="bob", lastname="ali", username="bob", email="bob@mail.com", password="bobpass")
+  #bob.set_password("bobpass")
+  user2 = User(userId=2, firstname="josh", lastname="ali", username="josh", email="josh@mail.com", password="joshpass")
+  db.session.add(user1)
+  db.session.commit()
+  db.session.add(user2)
+  db.session.commit()
+  return json.dumps(user1.toDict())
+
 # get all students
 # FIXED
-@user_views.route('/', methods=['GET'])
+@user_views.route('/all', methods=['GET'])
 def getallstudents():
   result = []
   students = getAllStudents()
@@ -104,10 +115,24 @@ def addStud():
 @user_views.route('/update/<id>', methods=['PUT'])
 def updateStud(id):
   try: 
+    student = Student.query.filter_by(studentId=id).first()
+    if student == None:
+      return 'ERROR: Student ID not found',404
     data = request.json
-    student = updateStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
-    ##return 'PASS: Student updated',200
-    return json.dumps(student.toDict()),202
+    if 'firstname' in data:
+      student.firstname = data['firstname']
+    if 'lastname' in data:
+      student.lastname = data['lastname']
+    if 'username' in data:
+      student.username = data['username']
+    if 'email' in data:
+      student.email = data['email']
+    ##student = updateStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
+    ##
+    db.session.add(student)
+    db.session.commit()
+    ##return json.dumps(student.toDict()),202
+    return 'PASS: Student updated',200
   except:
     return'ERROR: API Failed to update student', 404
 
@@ -116,9 +141,9 @@ def updateStud(id):
 def createRev():
   try:
       data = request.json
-      review = createReview(data["reviewDetails"], data["studentId"], data["id"])
-      result = getAllReviews()
-      return json.dump(result),200
+      review = createReview(data["reviewDetails"], data["studentId"], data["userId"])
+      #result = getAllReviews()
+      return json.dumps(review.toDict()),200
   except:
     return'ERROR: API Failed to create new review', 404
 

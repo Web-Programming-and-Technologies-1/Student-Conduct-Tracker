@@ -10,7 +10,8 @@ class Review(db.Model):
     studentId = db.Column(db.Integer, db.ForeignKey('student.studentId'))
     userId = db.Column(db.Integer, db.ForeignKey('user.id'))
    
-    def __init__(self, reviewDetails):
+    def __init__(self, reviewId, reviewDetails):
+        self.reviewId = reviewId
         self.reviewDetails = reviewDetails
         self.upvote = 0
         self.down = 0

@@ -3,7 +3,7 @@ from App.database import db
 from flask_login import UserMixin
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, primary_key=True)
     username =  db.Column(db.String(80), unique=True, nullable=False)
     firstname =  db.Column(db.String(50), nullable=False)
     lastname =  db.Column(db.String(50), nullable=False)
@@ -11,7 +11,8 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     review = db.relationship('Review', backref='user', lazy=True,cascade="all, delete-orphan" )
 
-    def __init__(self, firstname, lastname, username, email, password):
+    def __init__(self, userId, firstname, lastname, username, email, password):
+        self.userId = userId
         self.firstname = firstname
         self.lastname = lastname
         self.username = username
@@ -20,11 +21,12 @@ class User(db.Model):
 
     def toDict(self):
         return{
-            'id': self.id,
+            'id': self.userId,
             'firstname': self.firstname,
             'lastname': self.lastname,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+            'password':self.password
         }
 
     def set_password(self, password):

@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 def createReview(reviewDetails, studentId, userId):
     review = Review(reviewDetails = reviewDetails, studentId = studentId, userId = userId)
     #review = Review(reviewDetails = reviewDetails, studentId = studentId)
+    return json.dumps(review.toDict())
     try:
         db.session.add(review)
         db.session.commit()

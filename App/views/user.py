@@ -53,21 +53,31 @@ def static_user_page():
   except:
     return'ERROR: API Failed to render static-user.html',404
 
+"""
 
-@user_views.route('/')
+@user_views.route('/adduser',methods = ['POST'])
 def index():
-  user1 = User(userId=1, firstname="bob", lastname="ali", username="bob", email="bob@mail.com", password="bobpass")
-  #bob.set_password("bobpass")
-  user2 = User(userId=2, firstname="josh", lastname="ali", username="josh", email="josh@mail.com", password="joshpass")
-  db.session.add(user1)
-  db.session.commit()
-  db.session.add(user2)
-  db.session.commit()
-  return json.dumps(user1.toDict())
+  try:
+     data = request.json
+     create_user(data['userId'], data['firstname'], data['lastname'], data['username'], data['email'], data['password'])
+     #user1 = User(userId=3, firstname="bobo", lastname="alo", username="bobo", email="bobo@mail.com", password="bobword")
+     #bob.set_password("bobpass")
+     #user2 = User(userId=2, firstname="josh", lastname="ali", username="josh", email="josh@mail.com", password="joshpass")
+     #db.session.add(user1)
+     #db.session.commit()
+     #db.session.add(user2)
+     #db.session.commit()
+     #return json.dumps(user1.toDict())
+
+   return 'User Created', 200
+  except:
+   return 'Error', 404
+"""
+
 
 # get all students
 # FIXED
-@user_views.route('/all', methods=['GET'])
+@user_views.route('/', methods=['GET'])
 def getallstudents():
   result = []
   students = getAllStudents()
@@ -109,7 +119,7 @@ def addStud():
       createStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
       return'PASS: Student created',200
   except:
-      return'ERROR: API Failed to create new student', 404
+      return'ERROR: API Failed to create new student',404
 
 #update student NEED TO FIX
 @user_views.route('/update/<id>', methods=['PUT'])
@@ -119,6 +129,7 @@ def updateStud(id):
     if student == None:
       return 'ERROR: Student ID not found',404
     data = request.json
+    
     if 'firstname' in data:
       student.firstname = data['firstname']
     if 'lastname' in data:
@@ -127,10 +138,11 @@ def updateStud(id):
       student.username = data['username']
     if 'email' in data:
       student.email = data['email']
-    ##student = updateStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
-    ##
+    
     db.session.add(student)
     db.session.commit()
+  
+    #updateStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
     ##return json.dumps(student.toDict()),202
     return 'PASS: Student updated',200
   except:
@@ -139,19 +151,22 @@ def updateStud(id):
 #add a review NEED TO FIX
 @user_views.route('/addreview', methods=['POST'])
 def createRev():
+  
   try:
       data = request.json
-      review = createReview(data["reviewDetails"], data["studentId"], data["userId"])
+      createReview(data['reviewDetails'], data['studentId'], data['userId'])
       #result = getAllReviews()
-      return json.dumps(review.toDict()),200
+      return 'PASS: Review Created',200
   except:
-    return'ERROR: API Failed to create new review', 404
+      return'ERROR: API Failed to create new review', 404
+    
+
 
 @user_views.route('/users', methods=['POST'])
 def addUser():
   try:
     data = request.json
-    create_user(data['username'],data['password'])
+    create_user(data['userId'], data['firstname'], data['lastname'], data['username'], data['email'], data['password'])
     return 'PASS: User Created',200
   except:
       return'ERROR: API Failed to create new user', 404  

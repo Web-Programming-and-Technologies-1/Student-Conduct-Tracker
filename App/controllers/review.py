@@ -9,10 +9,11 @@ def createReview(reviewDetails, studentId, userId):
     try:
         db.session.add(review)
         db.session.commit()
+        return 'Successfully created review'
     except IntegrityError:
         db.session.rollback()
         return 'ERROR: Failed to create review'
-    return 'Successfully created review'
+    #return 'Successfully created review'
 
 # Read operations
 def getAllReviews():
@@ -23,7 +24,7 @@ def getAllReviews():
 
 def getReview(reviewId, userId):
     try:
-        return Review.query.filter_by(reviewId=reviewId, id=userId).first()
+        return Review.query.filter_by(reviewId=reviewId, userId=userId).first()
     except:
         return 'ERROR: Failed to get the review'
 

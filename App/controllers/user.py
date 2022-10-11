@@ -10,9 +10,9 @@ def get_all_users():
         return 'ERROR: Failed to get all users'
 
 
-def create_user(username, password):
+def create_user(userId, firstname, lastname, username, email, password):
     try:
-        newuser = User(username=username, password=password)
+        newuser = User(userId=userId, firstname=firstname, lastname=lastname, username=username, email=email, password=password)
         db.session.add(newuser)
         db.session.commit()
     except:

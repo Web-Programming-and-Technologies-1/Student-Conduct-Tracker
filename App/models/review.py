@@ -8,7 +8,7 @@ class Review(db.Model):
     upvoteScore =  db.Column(db.Integer)
     downvoteScore =  db.Column(db.Integer)
     studentId = db.Column(db.Integer, db.ForeignKey('student.studentId'))
-    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
    
     def __init__(self, reviewId, reviewDetails):
         self.reviewId = reviewId

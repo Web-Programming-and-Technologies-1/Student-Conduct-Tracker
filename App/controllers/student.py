@@ -32,8 +32,9 @@ def getStudent(studentId):
 def updateStudent(studentId, firstname, lastname, username, email):
     try:
         student = getStudent(studentId)
-        student.firstName = firstName,
-        student.lastName = lastName,
+        #student = Student.query.filter_by(studentId=studentId).first()
+        student.firstname = firstname,
+        student.lastname = lastname,
         student.username = username,
         student.email = email,
         db.session.add(student)
@@ -54,7 +55,7 @@ def deleteStudent(studentId, userId):
 def increaseKarmaScore (studentId):
     try:
         student = Student.query.filter_by(studentId=studentId).first()
-        student.karma = student.karma + 1
+        student.karmaScore = student.karmaScore + 1
         db.session.add(student)
         db.session.commit()
     except:
@@ -64,7 +65,7 @@ def increaseKarmaScore (studentId):
 def decreaseKarmaScore(studentId):
     try:
         student = Student.query.filter_by(studentId=studentId).first()
-        student.karma = student.karma - 1
+        student.karmaScore = student.karmaScore - 1
         db.session.add(student)
         db.session.commit()
     except:

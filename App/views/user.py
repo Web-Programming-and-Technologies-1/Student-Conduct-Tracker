@@ -5,7 +5,9 @@ import json
 
 from App.models import db , Student, User, Review
 
-from App.controllers import (
+from App.controllers import * 
+"""
+(
   # USER CONTROLLERS
     create_user, 
     get_all_users,
@@ -17,8 +19,10 @@ from App.controllers import (
     updateStudent,
     # REVIEW CONTROLLER
     createReview,
-    getAllReviews
+    getAllReviews,
+    
 )
+"""
 
 user_views = Blueprint('user_views', __name__, template_folder='../templates')
 
@@ -53,26 +57,6 @@ def static_user_page():
   except:
     return'ERROR: API Failed to render static-user.html',404
 
-"""
-
-@user_views.route('/adduser',methods = ['POST'])
-def index():
-  try:
-     data = request.json
-     create_user(data['userId'], data['firstname'], data['lastname'], data['username'], data['email'], data['password'])
-     #user1 = User(userId=3, firstname="bobo", lastname="alo", username="bobo", email="bobo@mail.com", password="bobword")
-     #bob.set_password("bobpass")
-     #user2 = User(userId=2, firstname="josh", lastname="ali", username="josh", email="josh@mail.com", password="joshpass")
-     #db.session.add(user1)
-     #db.session.commit()
-     #db.session.add(user2)
-     #db.session.commit()
-     #return json.dumps(user1.toDict())
-
-   return 'User Created', 200
-  except:
-   return 'Error', 404
-"""
 
 
 # get all students
@@ -100,15 +84,39 @@ def searchStudent(id): #id is the studentID
   except:
     return 'ERROR: API Failed to search for the student', 404
 
-#karma NEED TO FIX
+#karma FIXED
 @user_views.route('/karma/<id>', methods=['GET'])
 def getKarma(id): #id is the studentID
   try:
     student = getStudent(id)
-    studentKarma = student.karma
+    studentKarma = student.karmaScore
     return json.dumps(studentKarma),200
   except:
     return'ERROR: API Failed to get student karma score', 404
+
+@user_views.route('/upvote/<reviewId>/<studentId>', methods=['POST'])
+def createUpvote(reviewId,studentId): 
+  try:
+    upvoteReview(reviewId)
+    #upvotereview=upvoteReview(reviewId)
+    #print(upvotereview)
+    increaseKarmaScore(studentId)
+    
+    return 'PASS: Review Upvoted and Karma Score Increased', 200
+  except:
+    return'ERROR: API Failed to upvote review and increase student karma score', 404
+
+@user_views.route('/downvote/<reviewId>/<studentId>', methods=['POST'])
+def createDownvote(reviewId,studentId): 
+  try:
+    downvoteReview(reviewId)
+    #print(downvotescore)
+    decreaseKarmaScore(studentId)
+    
+    return 'PASS: Review Downvoted and Karma Score Decreased', 200
+  except:
+    return'ERROR: API Failed to downvote review and decrease student karma score', 404
+  
 
 #add student  
 # FIXED
@@ -128,7 +136,7 @@ def updateStud(id):
     student = Student.query.filter_by(studentId=id).first()
     if student == None:
       return 'ERROR: Student ID not found',404
-    data = request.json
+    data = request.get_json()
     
     if 'firstname' in data:
       student.firstname = data['firstname']
@@ -138,11 +146,11 @@ def updateStud(id):
       student.username = data['username']
     if 'email' in data:
       student.email = data['email']
-    
     db.session.add(student)
     db.session.commit()
   
-    #updateStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
+    #updateStudent(studentId=id, firstname=student.firstname, lastname=student.lastname, username=student.username, email=student.email)
+    #updateStudent(studentId=['studentId'], firstname=data['firstname'], lastname=data['lastname'], username=data['username'], email=data['email'])
     ##return json.dumps(student.toDict()),202
     return 'PASS: Student updated',200
   except:
@@ -152,12 +160,13 @@ def updateStud(id):
 @user_views.route('/addreview', methods=['POST'])
 def createRev():
   
-  try:
-      data = request.json
-      createReview(data['reviewDetails'], data['studentId'], data['userId'])
+    try:
+      data = request.get_json()
+      review=createReview(data['reviewDetails'], data['studentId'], data['userId'])
       #result = getAllReviews()
+      #return review
       return 'PASS: Review Created',200
-  except:
+    except:
       return'ERROR: API Failed to create new review', 404
     
 
@@ -165,7 +174,7 @@ def createRev():
 @user_views.route('/users', methods=['POST'])
 def addUser():
   try:
-    data = request.json
+    data = request.get_json()
     create_user(data['userId'], data['firstname'], data['lastname'], data['username'], data['email'], data['password'])
     return 'PASS: User Created',200
   except:
@@ -176,3 +185,15 @@ def getUser():
   result = []
   user = get_all_users_json()
   return user 
+
+@user_views.route('/getallreviews', methods=['GET'])
+def getallreviews():
+  result = []
+  reviews = getAllReviews()
+  print(reviews)
+  try:
+     for review in reviews:
+         result.append(review.toDict())
+     return json.dumps(result),200
+  except:
+     return'ERROR: API Failed to get all reviews', 404

@@ -1,8 +1,7 @@
 import os, tempfile, pytest, logging, unittest
+# from test_flaskr import *
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from App.main import create_app
-from App.database import create_db
 from App.models import User
 
 
@@ -19,13 +18,14 @@ LOGGER = logging.getLogger(__name__)
 class UserUnitTests(unittest.TestCase):
 
     def test_new_user(self):
-        user = User("userbob", "bob", "baloo", "bob@gmail.com","bobpass")
+        user = User(userId=1, firstname="userbob", lastname="bob", username="baloo", email="bob@gmail.com", password="bobpass")
         assert user.username == "userbob"
+        assert user.email == "bob@mail.com"
 
-    def test_toDict(self):
-        user = User("userbob", "bob", "baloo", "bob@gmail.com","bobpass")
+    def user_test_toDict(self):
+        user = User(userId=1, firstname="userbob", lastname="bob", username="baloo", email="bob@gmail.com", password="bobpass")
         userDict = user.toDict()
-        self.assertDictEqual(userDict, {"userId":None, "username":"userbob","firstname": "bob", "lastname":"baloo", "email":"bob@gmail.com","password":"bobpass"})
+        self.assertDictEqual(userDict, {"id":1, "firstname": "bob", "lastname":"baloo","username":"userbob","email":"bob@gmail.com","password":"bobpass"})
     
     def test_set_password(self):
         password = "mypass"
@@ -36,4 +36,4 @@ class UserUnitTests(unittest.TestCase):
     def test_check_password(self):
         password = "mypass"
         user = User("bob", password)
-        assert user.check_password(password)
+        assert user.check_password(password) != password

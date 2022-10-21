@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 class StudentUnitTests(unittest.TestCase):
 
-    def test_toDict(self):
+    def student_test_toDict(self):
         student = Student(studentId=1, firstname="bob", lastname="baloo", username="userbob", email="bob@gmail.com")
         studentDict = student.toDict()
         self.assertDictEqual(studentDict, {"id":1,"firstname": "bob", "lastname":"baloo","username":"userbob", "email":"bob@gmail.com","karmaScore":0.0})

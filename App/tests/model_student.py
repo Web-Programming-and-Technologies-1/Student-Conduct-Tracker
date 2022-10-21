@@ -9,7 +9,7 @@ from wsgi import app
 LOGGER = logging.getLogger(__name__)
 
 '''
-   Unit 
+   Unit tests
 
 '''
 

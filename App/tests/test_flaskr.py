@@ -25,6 +25,7 @@ def empty_db():
    Unit Tests
 '''
 
+
 # This is a unit test because there are no side effects
 # Test 1: Checks if api/lol route returns 'lol'
 def test_hello(empty_db):

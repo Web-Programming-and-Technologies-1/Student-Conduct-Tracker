@@ -1,4 +1,3 @@
-# from werkzeug.security import check_password_hash, generate_password_hash
 from App.database import db
 
 
@@ -11,7 +10,6 @@ class Review(db.Model):
     userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
    
     def __init__(self, studentId, userId, reviewDetails):
-       # self.reviewId = reviewId
         self.reviewDetails = reviewDetails
         self.studentId = studentId
         self.userId = userId

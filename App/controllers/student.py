@@ -32,7 +32,6 @@ def getStudent(studentId):
 def updateStudent(studentId, firstname, lastname, username, email):
     try:
         student = getStudent(studentId)
-        #student = Student.query.filter_by(studentId=studentId).first()
         student.firstname = firstname,
         student.lastname = lastname,
         student.username = username,
@@ -43,9 +42,9 @@ def updateStudent(studentId, firstname, lastname, username, email):
         return 'ERROR: Failed to update the student '
 # Delete operations
 
-def deleteStudent(studentId, userId):
+def deleteStudent(studentId):
     try:
-        student = getReview(studentId, userId)
+        student = getStudent(studentId)
         db.session.delete(student)
         db.session.commit()
     except:

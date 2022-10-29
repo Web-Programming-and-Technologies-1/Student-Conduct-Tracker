@@ -32,7 +32,7 @@ class UserUnitTests(unittest.TestCase):
     def test_new_user(self):
         user = User(userId=1, firstname="userbob", lastname="bob", username="baloo", email="bob@gmail.com", password="bobpass")
         assert user.username == "baloo"
-        # assert user.email == "bob@mail.com"
+        assert user.email == "bob@gmail.com"
 
     def user_test_toDict(self):
         user = User(userId=1, firstname="userbob", lastname="bob", username="baloo", email="bob@gmail.com", password="bobpass")
@@ -40,15 +40,14 @@ class UserUnitTests(unittest.TestCase):
         self.assertDictEqual(userDict, {"id":1, "firstname": "bob", "lastname":"baloo","username":"userbob","email":"bob@gmail.com","password":"bobpass"})
     
     def test_set_password(self):
-        password = "mypass"
+        password = "bobpass"
         hashed = generate_password_hash(password, method='sha256')
-        # user = User("bob", password)
-        user = User(1, "userbob", "bob", "baloo", "bob@gmail.com", "bobpass")
+        user = User(1, "userbob", "bob", "baloo", "bob@gmail.com", password)
         assert user.password != password
 
     def test_check_password(self):
-        password = "mypass"
-        user = User(1, "userbob", "bob", "baloo", "bob@gmail.com", "bobpass")
+        password = "bobpass"
+        user = User(1, "userbob", "bob", "baloo", "bob@gmail.com", password)
         assert user.check_password(password) != password
 
 
@@ -68,14 +67,6 @@ class ReviewUnitTests(unittest.TestCase):
         reviewDict = review.toDict()
         self.assertDictEqual(reviewDict, {"id":None,"reviewDetails": "enter review details here", "studentId":1,"userId":2, "upvote":0,"downvote":0})
     
-
-# This is a unit test because there are no side effects
-# Test 1: Checks if api/lol route returns 'lol'
-# def test_hello(empty_db):
-#     response = empty_db.get('/api/lol')
-#     assert b'lol' in response.data
-
-
 
 '''
     Integration Tests

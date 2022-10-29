@@ -25,6 +25,17 @@ def get_all_users():
     except:
         return 'ERROR: Failed to get all staffs'
 
+def get_all_users_toDict():
+    users = get_all_users()
+    try:
+        if not users:
+          return []
+        users = [user.toDict() for user in users]
+        return users
+    except: 
+        return 'ERROR: Failed to get all staffs in dictionary format'
+
+
 #Update operations
 def updateUser(userId, username, firstname, lastname, email, password ):
     try:

@@ -28,6 +28,16 @@ def getStudent(studentId):
     except:
         return 'ERROR: Failed to get the student'
 
+def getAllStudents_toDict():
+    students = getAllStudents()
+    try:
+        if not students:
+          return []
+        students = [student.toDict() for student in students]
+        return students
+    except: 
+        return 'ERROR: Failed to get all students in dictionary format'
+
 # Update operations
 def updateStudent(studentId, firstname, lastname, username, email):
     try:

@@ -26,6 +26,16 @@ def getReview(reviewId, userId):
     except:
         return 'ERROR: Failed to get the review'
 
+def getAllReviews_toDict():
+    reviews = getAllReviews()
+    try:
+        if not reviews:
+          return []
+        reviews = [review.toDict() for review in reviews]
+        return reviews
+    except: 
+        return 'ERROR: Failed to get all reviews in dictionary format'
+
 # Update operations
 def updateReview(reviewId, reviewDetails, userId):
     try:

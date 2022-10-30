@@ -9,7 +9,8 @@ class Review(db.Model):
     studentId = db.Column(db.Integer, db.ForeignKey('student.studentId'))
     userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
    
-    def __init__(self, studentId, userId, reviewDetails):
+    def __init__(self, reviewId, studentId, userId, reviewDetails):
+        self.reviewId = reviewId
         self.reviewDetails = reviewDetails
         self.studentId = studentId
         self.userId = userId

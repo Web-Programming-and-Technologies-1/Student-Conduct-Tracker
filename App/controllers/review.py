@@ -3,8 +3,8 @@ from App.database import db
 from sqlalchemy.exc import IntegrityError
 
 # Create operations
-def createReview(reviewDetails, studentId, userId):
-    review = Review(reviewDetails = reviewDetails, studentId = studentId, userId = userId)
+def createReview(reviewId, reviewDetails, studentId, userId):
+    review = Review(reviewId=reviewId,reviewDetails = reviewDetails, studentId = studentId, userId = userId)
     try:
         db.session.add(review)
         db.session.commit()
@@ -15,63 +15,81 @@ def createReview(reviewDetails, studentId, userId):
 
 # Read operations
 def getAllReviews():
-    try:
-       return Review.query.all()
-    except:
-        return 'ERROR: Failed to find all the reviews'
+  return Review.query.all()
+ 
+def getReview(reviewId):
+    return Review.query.filter_by(reviewId=reviewId).first()
 
-def getReview(reviewId, userId):
-    try:
-        return Review.query.filter_by(reviewId=reviewId, userId=userId).first()
-    except:
-        return 'ERROR: Failed to get the review'
+def getAllReviewsByStudent(studentId):
+    return Review.query.filter_by(studentId=studentId).all()
+
+def getAllReviewsByStaff(userId):
+    return Review.query.filter_by(userId=userId).all()
 
 def getAllReviews_toDict():
     reviews = getAllReviews()
-    try:
-        if not reviews:
-          return []
-        reviews = [review.toDict() for review in reviews]
-        return reviews
-    except: 
-        return 'ERROR: Failed to get all reviews in dictionary format'
+    if reviews:
+        return [review.toDict() for review in reviews]
+    return None
+        
+   
+def getAllReviewsByStudent_toDict(studentId):
+    reviews = getAllReviewsByStudent(studentId)
+    if reviews:
+        return [review.toDict() for review in reviews]
+    return None
+
+def getAllReviewsByStaff_toDict(userId):
+    reviews = getAllReviewsByStaff(userId)
+    if reviews:
+        return [review.toDict() for review in reviews]
+    return None  
+   
 
 # Update operations
-def updateReview(reviewId, reviewDetails, userId):
+def updateReview(reviewId, studentId, userId, reviewDetails):
+    newReview = getReview(reviewId)
     try:
-        newReview = getReview(reviewId, userId)
-        newReview.reviewDetails = reviewDetails,
-        db.session.add(newReview)
-        db.session.commit()
+        if newReview:
+           
+            newReview.studentId = studentId
+            newReview.reviewDetails = reviewDetails
+            newReview.userId = userId
+            db.session.add(newReview)
+            return db.session.commit()
     except:
-        return 'ERROR: Failed to update the review'
+        db.session.rollback()
+        return None
 
 # Delete operations
-def deleteReview(reviewId, userId):
+def deleteReview(reviewId):
     try:
-        review = getReview(reviewId, userId)
+        review = getReview(reviewId)
         db.session.delete(review)
         db.session.commit()
     except:
+        db.session.rollback()
         return'ERROR: Failed to delete the review'
 
 # Review upvote logic
 def upvoteReview(reviewId):
     try:
-        review = Review.query.filter_by(reviewId=reviewId).first()
+        review = getReview(reviewId)
         review.upvoteScore = review.upvoteScore + 1
         db.session.add(review)
         db.session.commit()
     except:
+        db.session.rollback()
         return 'ERROR: Failed to increase the review votes'
 
 # Review downvote logic
 def downvoteReview(reviewId):
     try:
-        review = Review.query.filter_by(reviewId=reviewId).first()
+        review = getReview(reviewId)
         review.downvoteScore = review.downvoteScore + 1
         db.session.add(review)
         db.session.commit()
     except:
+        db.session.rollback()
         return 'ERROR: Failed to decrease the review votes'
 

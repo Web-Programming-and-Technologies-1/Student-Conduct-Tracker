@@ -48,15 +48,16 @@ def updateStudent(studentId, firstname, lastname, username, email):
     student = getStudent(studentId)
     try:
         if student:
-            student.firstname = firstname,
-            student.lastname = lastname,
-            student.username = username,
-            student.email = email,
+            student.studentId = studentId
+            student.firstname = firstname
+            student.lastname = lastname
+            student.username = username
+            student.email = email
             db.session.add(student)
             return db.session.commit()
     except:
         db.session.rollback()
-        return 'ERROR: Failed to update the student '
+        return None
 # Delete operations
 
 

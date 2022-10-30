@@ -16,7 +16,7 @@ class Student(db.Model):
         self.lastname = lastname
         self.username = username
         self.email = email
-        self.karmaScore = 0.0
+        self.karmaScore = 0
 
     def toDict(self):
         return{

@@ -18,7 +18,7 @@ from App.models import *
 
 
 @pytest.fixture
-def empty_db(autouse=True, scope="module"):
+def empty_db(autouse=True, scope="session"):
     app = create_app(
         {'TESTING': True, 'SQLALCHEMY_DATABASE_URI': 'sqlite:///temp-database.db'})
     init_db(app)
@@ -60,7 +60,7 @@ class UsersIntegrationTests(unittest.TestCase):
         assert user.firstname == "updateTest"
 
     def test_deleteUser(self):
-        deleteUser(3)
+        deleteUser(userId=3)
         assert get_user(3) == None
 
 
@@ -75,26 +75,23 @@ class StudentIntegrationTests(unittest.TestCase):
         assert student.username == "jonny"
 
     def test_getAllStudents_toDict(self):
+
         student_dict = getAllStudents_toDict()
         self.assertListEqual([{"id": 1, "firstname": "john", "lastname": "doe",
-                             "username": "jonny", "email": "john@gmail.com", "karmaScore": 0.0}], student_dict)
+                             "username": "jonny", "email": "john@gmail.com", "karmaScore": 0}], student_dict)
 
-    # contain assertion error
     def test_updateStudent(self):
         createStudent(studentId=2, firstname="Harry", lastname="potter",
                       username="harrypot", email="harry@gmail.com")
-        updateStudent(studentId=2, firstname="testUpdate",
-                      lastname="potter", username="harrypot", email="harry@gmail.com")
+        updateStudent(studentId=2, firstname="bob", lastname="potter",
+                      username="harrypot", email="harry@gmail.com")
         student = getStudent(2)
-        assert student.firstname == "testUpdate"
-
-    def test_deleteStudent(self):
-        deleteStudent(2)
-        assert getStudent(2) == None
+        assert student.firstname == "bob"
 
     def test_increaseKarmaScore(self):
         createStudent(studentId=3, firstname="Henry", lastname="potter",
                       username="henrypot", email="henry@gmail.com")
+
         student = getStudent(3)
         score = student.karmaScore
         increaseKarmaScore(3)
@@ -104,9 +101,8 @@ class StudentIntegrationTests(unittest.TestCase):
         deleteStudent(3)
 
     def test_decreaseKarmaScore(self):
-        createStudent(studentId=4, firstname="test", lastname="testing",
-                      username="tester", email="test@gmail.com")
-        increaseKarmaScore(4)              
+        createStudent(studentId=4, firstname="Henry", lastname="potter",
+                      username="henrypot", email="henry@gmail.com")
         student = getStudent(4)
         score = student.karmaScore
         decreaseKarmaScore(4)
@@ -115,4 +111,86 @@ class StudentIntegrationTests(unittest.TestCase):
         assert newScore == (score - 1)
         deleteStudent(4)
 
+    def test_deleteStudent(self):
+        deleteStudent(2)
+        assert getStudent(2) == None
+
+
 '''Review Controllers Integration Tests -'''
+
+
+class ReviewIntegrationTests(unittest.TestCase):
+
+    def test_createReview(self):
+        createReview(reviewId=1, reviewDetails="this is an integration test",
+                     studentId=1, userId=1)
+        review = getReview(reviewId=1)
+        assert review.reviewDetails == "this is an integration test"
+        deleteReview(1)
+
+    def test_getAllReviewsByStudent_toDict(self):
+        createReview(reviewId=1, reviewDetails="this is an integration test",
+                     studentId=1, userId=1)
+        createReview(reviewId=2, reviewDetails="this is a 2nd integration test",
+                     studentId=1, userId=1)
+        review_dict = getAllReviewsByStudent_toDict(1)
+        self.assertListEqual([{"id": 1, "reviewDetails": "this is an integration test",
+                             "studentId": 1, "userId": 1, "upvote": 0, "downvote": 0}, {"id": 2, "reviewDetails": "this is a 2nd integration test",
+                                                                                        "studentId": 1, "userId": 1, "upvote": 0, "downvote": 0}], review_dict)
+        deleteReview(1)
+        deleteReview(2)
+
+    def test_getAllReviewsByStaff_toDict(self):
+        createReview(reviewId=1, reviewDetails="this is an integration test",
+                     studentId=1, userId=1)
+        createReview(reviewId=2, reviewDetails="this is a 2nd integration test",
+                     studentId=1, userId=1)
+        review_dict = getAllReviewsByStaff_toDict(1)
+        self.assertListEqual([{"id": 1, "reviewDetails": "this is an integration test",
+                             "studentId": 1, "userId": 1, "upvote": 0, "downvote": 0}, {"id": 2, "reviewDetails": "this is a 2nd integration test",
+                                                                                        "studentId": 1, "userId": 1, "upvote": 0, "downvote": 0}], review_dict)
+        deleteReview(1)
+        deleteReview(2)
+
+    def test_getAllReviews_toDict(self):
+        createReview(reviewId=1, reviewDetails="this is an integration test",
+                     studentId=1, userId=1)
+        createReview(reviewId=2, reviewDetails="this is a 2nd integration test",
+                     studentId=1, userId=2)
+        review_dict = getAllReviews_toDict()
+        self.assertListEqual([{"id": 1, "reviewDetails": "this is an integration test",
+                             "studentId": 1, "userId": 1, "upvote": 0, "downvote": 0}, {"id": 2, "reviewDetails": "this is a 2nd integration test",
+                                                                                        "studentId": 1, "userId": 2, "upvote": 0, "downvote": 0}], review_dict)
+        deleteReview(1)
+        deleteReview(2)
+
+    def test_updateReview(self):
+        createReview(reviewId=1, reviewDetails="this is an integration test",
+                     studentId=1, userId=1)
+        updateReview(reviewId=1, studentId=1, userId=1,
+                     reviewDetails="testing update review")
+        review = getReview(reviewId=1)
+        assert review.reviewDetails == "testing update review"
+        deleteReview(1)
+
+    def test_upvoteReview(self):
+        createReview(reviewId=1, reviewDetails="testing upvote",
+                     studentId=1, userId=1)
+        review = getReview(1)
+        upvoteScore = review.upvoteScore
+        upvoteReview(1)
+        review = getReview(1)
+        newUpvoteScore = review.upvoteScore
+        assert newUpvoteScore == (upvoteScore + 1)
+        deleteReview(1)
+
+    def test_downvoteReview(self):
+        createReview(reviewId=1, reviewDetails="testing downvote",
+                     studentId=1, userId=1)
+        review = getReview(1)
+        downvoteScore = review.downvoteScore
+        downvoteReview(1)
+        review = getReview(1)
+        newdownvoteScore = review.downvoteScore
+        assert newdownvoteScore == (downvoteScore + 1)
+        deleteReview(1)

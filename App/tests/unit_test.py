@@ -49,7 +49,7 @@ class StudentUnitTests(unittest.TestCase):
 class ReviewUnitTests(unittest.TestCase):
 
     def test_review_toDict(self):
-        review = Review(studentId=1, userId=2, reviewDetails="enter review details here")
+        review = Review(reviewId=1,studentId=1, userId=2, reviewDetails="enter review details here")
         reviewDict = review.toDict()
-        self.assertDictEqual(reviewDict, {"id":None,"reviewDetails": "enter review details here", "studentId":1,"userId":2, "upvote":0,"downvote":0})
+        self.assertDictEqual(reviewDict, {"id":1,"reviewDetails": "enter review details here", "studentId":1,"userId":2, "upvote":0,"downvote":0})
  

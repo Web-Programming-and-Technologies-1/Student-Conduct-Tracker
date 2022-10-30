@@ -11,6 +11,4 @@ from App.database import init_db
 LOGGER = logging.getLogger(__name__)
 
 
-
-
-
+ 

@@ -25,7 +25,7 @@ class Student(db.Model):
             'lastname': self.lastname,
             'username': self.username,
             'email': self.email,
-            'karmascore': self.karmaScore
+            'karmaScore': self.karmaScore
         }
 
     

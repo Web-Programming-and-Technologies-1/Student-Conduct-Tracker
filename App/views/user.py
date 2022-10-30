@@ -141,7 +141,7 @@ def updateStud(id):
 def createRev():
     try:
       data = request.get_json()
-      review=createReview(data['reviewDetails'], data['studentId'], data['userId'])
+      review=createReview(data['reviewId'],data['reviewDetails'], data['studentId'], data['userId'])
       return 'PASS: Review Created',200
     except:
       return'ERROR: API Failed to create new review', 404

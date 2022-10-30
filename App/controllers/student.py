@@ -14,7 +14,7 @@ def createStudent(studentId, firstname, lastname, username, email):
     except IntegrityError:
         db.session.rollback()
         return 'ERROR: Failed to create student'
-    return 'Successfully created student'
+
 
 # Read operations
 
@@ -28,7 +28,6 @@ def getAllStudents():
 
 def getStudent(studentId):
     return Student.query.filter_by(studentId=studentId).first()
-   
 
 
 def getAllStudents_toDict():
@@ -45,15 +44,18 @@ def getAllStudents_toDict():
 
 
 def updateStudent(studentId, firstname, lastname, username, email):
+
+    student = getStudent(studentId)
     try:
-        student = getStudent(studentId)
-        student.firstname = firstname,
-        student.lastname = lastname,
-        student.username = username,
-        student.email = email,
-        db.session.add(student)
-        db.session.commit()
+        if student:
+            student.firstname = firstname,
+            student.lastname = lastname,
+            student.username = username,
+            student.email = email,
+            db.session.add(student)
+            return db.session.commit()
     except:
+        db.session.rollback()
         return 'ERROR: Failed to update the student '
 # Delete operations
 
@@ -64,6 +66,7 @@ def deleteStudent(studentId):
         db.session.delete(student)
         db.session.commit()
     except:
+        db.session.rollback()
         return 'ERROR: Failed to delete the student'
 
 # increase Karma score logic
@@ -71,11 +74,12 @@ def deleteStudent(studentId):
 
 def increaseKarmaScore(studentId):
     try:
-        student = Student.query.filter_by(studentId=studentId).first()
+        student = getStudent(studentId)
         student.karmaScore = student.karmaScore + 1
         db.session.add(student)
         db.session.commit()
     except:
+        db.session.rollback()
         return 'ERROR: Failed to increase karma score'
 
 # decrease karma score logic
@@ -83,9 +87,10 @@ def increaseKarmaScore(studentId):
 
 def decreaseKarmaScore(studentId):
     try:
-        student = Student.query.filter_by(studentId=studentId).first()
+        student = getStudent(studentId)
         student.karmaScore = student.karmaScore - 1
         db.session.add(student)
         db.session.commit()
     except:
+        db.session.rollback()
         return 'ERROR: Failed to decrease karma score'

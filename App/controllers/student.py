@@ -1,10 +1,13 @@
-from App.models import  User, Review, Student
+from App.models import User, Review, Student
 from App.database import db
 from sqlalchemy.exc import IntegrityError
 
 # Create operations
-def createStudent(studentId, firstname, lastname, username, email ):
-    student = Student(studentId=studentId, firstname=firstname, lastname=lastname, username = username, email=email)
+
+
+def createStudent(studentId, firstname, lastname, username, email):
+    student = Student(studentId=studentId, firstname=firstname,
+                      lastname=lastname, username=username, email=email)
     try:
         db.session.add(student)
         db.session.commit()
@@ -15,30 +18,32 @@ def createStudent(studentId, firstname, lastname, username, email ):
 
 # Read operations
 
+
 def getAllStudents():
     try:
-       return Student.query.all()
+        return Student.query.all()
     except:
         return 'ERROR: Failed to find all the students'
 
+
 def getStudent(studentId):
-    try:
-        student = Student.query.filter_by(studentId=studentId).first()
-        return student
-    except:
-        return 'ERROR: Failed to get the student'
+    return Student.query.filter_by(studentId=studentId).first()
+   
+
 
 def getAllStudents_toDict():
     students = getAllStudents()
     try:
         if not students:
-          return []
+            return []
         students = [student.toDict() for student in students]
         return students
-    except: 
+    except:
         return 'ERROR: Failed to get all students in dictionary format'
 
 # Update operations
+
+
 def updateStudent(studentId, firstname, lastname, username, email):
     try:
         student = getStudent(studentId)
@@ -52,16 +57,19 @@ def updateStudent(studentId, firstname, lastname, username, email):
         return 'ERROR: Failed to update the student '
 # Delete operations
 
+
 def deleteStudent(studentId):
     try:
         student = getStudent(studentId)
         db.session.delete(student)
         db.session.commit()
     except:
-        return'ERROR: Failed to delete the student'
+        return 'ERROR: Failed to delete the student'
 
 # increase Karma score logic
-def increaseKarmaScore (studentId):
+
+
+def increaseKarmaScore(studentId):
     try:
         student = Student.query.filter_by(studentId=studentId).first()
         student.karmaScore = student.karmaScore + 1
@@ -71,6 +79,8 @@ def increaseKarmaScore (studentId):
         return 'ERROR: Failed to increase karma score'
 
 # decrease karma score logic
+
+
 def decreaseKarmaScore(studentId):
     try:
         student = Student.query.filter_by(studentId=studentId).first()

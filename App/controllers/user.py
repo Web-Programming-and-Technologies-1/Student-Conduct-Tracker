@@ -11,7 +11,7 @@ def create_user(userId, firstname, lastname, username, email, password):
                        username=username, email=email, password=password)
         db.session.add(newuser)
         db.session.commit()
-    except:
+    except IntegrityError:
         db.session.rollback()
         return 'ERROR: Failed to create new staff'
 

@@ -17,12 +17,14 @@ class UserUnitTests(unittest.TestCase):
         assert user.username == "baloo"
         assert user.email == "bob@gmail.com"
 
+ 
     def test_user_toDict(self):
         user = User(userId=1, firstname="userbob", lastname="bob", username="baloo", email="bob@gmail.com", password="bobpass")
         userDict = user.toDict()
         self.assertDictEqual(userDict, {"id":1, "firstname": "userbob", "lastname":"bob","username":"baloo","email":"bob@gmail.com"})
       
 
+ 
     def test_set_password(self):
         password = "bobpass"
         hashed = generate_password_hash(password, method='sha256')
@@ -37,7 +39,7 @@ class UserUnitTests(unittest.TestCase):
 
 '''Student Model Unit Tests -'''
 class StudentUnitTests(unittest.TestCase):
-
+ 
     def test_student_toDict(self):
         student = Student(studentId=1, firstname="bob", lastname="baloo", username="userbob", email="bob@gmail.com")
         studentDict = student.toDict()
@@ -50,3 +52,4 @@ class ReviewUnitTests(unittest.TestCase):
         review = Review(studentId=1, userId=2, reviewDetails="enter review details here")
         reviewDict = review.toDict()
         self.assertDictEqual(reviewDict, {"id":None,"reviewDetails": "enter review details here", "studentId":1,"userId":2, "upvote":0,"downvote":0})
+ 

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, jsonify, request, send_from_directory
 from flask_jwt import jwt_required
+
 import json
 
 
@@ -53,6 +54,7 @@ def static_user_page():
 
 ##
 @user_views.route('/', methods=['GET'])
+@jwt_required()
 def getallstudents():
   result = []
   students = getAllStudents()
@@ -67,6 +69,7 @@ def getallstudents():
 
 #search students
 @user_views.route('/searchstudent/<id>', methods=['GET'])
+@jwt_required()
 def searchStudent(id): 
   try:
     student = getStudent(id)
@@ -76,6 +79,7 @@ def searchStudent(id):
 
 #karma 
 @user_views.route('/karma/<id>', methods=['GET'])
+@jwt_required()
 def getKarma(id): 
   try:
     student = getStudent(id)
@@ -85,6 +89,7 @@ def getKarma(id):
     return'ERROR: API Failed to get student karma score', 404
 
 @user_views.route('/upvote/<reviewId>/<studentId>', methods=['POST'])
+@jwt_required()
 def createUpvote(reviewId,studentId): 
   try:
     upvoteReview(reviewId)
@@ -94,6 +99,7 @@ def createUpvote(reviewId,studentId):
     return'ERROR: API Failed to upvote review and increase student karma score', 404
 
 @user_views.route('/downvote/<reviewId>/<studentId>', methods=['POST'])
+@jwt_required()
 def createDownvote(reviewId,studentId): 
   try:
     downvoteReview(reviewId)
@@ -105,6 +111,7 @@ def createDownvote(reviewId,studentId):
 
 #add student  
 @user_views.route('/add', methods=['POST'])
+@jwt_required()
 def addStud():
   try:
       data = request.json
@@ -115,6 +122,7 @@ def addStud():
 
 #update student 
 @user_views.route('/update/<id>', methods=['PUT'])
+@jwt_required()
 def updateStud(id):
   try: 
     student = Student.query.filter_by(studentId=id).first()
@@ -138,6 +146,7 @@ def updateStud(id):
 
 #add a review 
 @user_views.route('/addreview', methods=['POST'])
+@jwt_required()
 def createRev():
     try:
       data = request.get_json()
@@ -164,6 +173,7 @@ def getUser():
   return user 
 
 @user_views.route('/getallreviews', methods=['GET'])
+@jwt_required()
 def getallreviews():
   result = []
   reviews = getAllReviews()

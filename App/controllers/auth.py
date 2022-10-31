@@ -2,6 +2,7 @@ import flask_login
 from flask_jwt import JWT
 from App.models import User
 
+
 #Added error handling to the functions below provided within the MVC template
 def authenticate(email, password):
     try:

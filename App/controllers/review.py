@@ -6,9 +6,10 @@ from sqlalchemy.exc import IntegrityError
 def createReview(reviewId, reviewDetails, studentId, userId):
     review = Review(reviewId=reviewId,reviewDetails = reviewDetails, studentId = studentId, userId = userId)
     try:
-        db.session.add(review)
-        db.session.commit()
-        return 'Successfully created review'
+        if review:
+            db.session.add(review)
+            db.session.commit()
+            return 'Successfully created review'
     except IntegrityError:
         db.session.rollback()
         return 'ERROR: Failed to create review'
@@ -63,32 +64,35 @@ def updateReview(reviewId, studentId, userId, reviewDetails):
 
 # Delete operations
 def deleteReview(reviewId):
+    review = getReview(reviewId)
     try:
-        review = getReview(reviewId)
-        db.session.delete(review)
-        db.session.commit()
+        if review:
+            db.session.delete(review)
+            return db.session.commit()
     except:
         db.session.rollback()
         return'ERROR: Failed to delete the review'
 
 # Review upvote logic
 def upvoteReview(reviewId):
+    review = getReview(reviewId)
     try:
-        review = getReview(reviewId)
-        review.upvoteScore = review.upvoteScore + 1
-        db.session.add(review)
-        db.session.commit()
+        if review:
+            review.upvoteScore = review.upvoteScore + 1
+            db.session.add(review)
+            return db.session.commit()
     except:
         db.session.rollback()
         return 'ERROR: Failed to increase the review votes'
 
 # Review downvote logic
 def downvoteReview(reviewId):
+    review = getReview(reviewId)
     try:
-        review = getReview(reviewId)
-        review.downvoteScore = review.downvoteScore + 1
-        db.session.add(review)
-        db.session.commit()
+        if review:
+            review.downvoteScore = review.downvoteScore + 1
+            db.session.add(review)
+            return db.session.commit()
     except:
         db.session.rollback()
         return 'ERROR: Failed to decrease the review votes'

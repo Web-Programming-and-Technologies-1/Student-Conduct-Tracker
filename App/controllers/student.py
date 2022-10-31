@@ -9,8 +9,9 @@ def createStudent(studentId, firstname, lastname, username, email):
     student = Student(studentId=studentId, firstname=firstname,
                       lastname=lastname, username=username, email=email)
     try:
-        db.session.add(student)
-        db.session.commit()
+        if student:
+            db.session.add(student)
+            return db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return 'ERROR: Failed to create student'
@@ -20,10 +21,9 @@ def createStudent(studentId, firstname, lastname, username, email):
 
 
 def getAllStudents():
-    try:
-        return Student.query.all()
-    except:
-        return 'ERROR: Failed to find all the students'
+     
+    return Student.query.all()
+     
 
 
 def getStudent(studentId):
@@ -33,10 +33,8 @@ def getStudent(studentId):
 def getAllStudents_toDict():
     students = getAllStudents()
     try:
-        if not students:
-            return []
-        students = [student.toDict() for student in students]
-        return students
+        if students:
+            return [student.toDict() for student in students]
     except:
         return 'ERROR: Failed to get all students in dictionary format'
 
@@ -62,10 +60,11 @@ def updateStudent(studentId, firstname, lastname, username, email):
 
 
 def deleteStudent(studentId):
+    student = getStudent(studentId)
     try:
-        student = getStudent(studentId)
-        db.session.delete(student)
-        db.session.commit()
+        if student:
+            db.session.delete(student)
+            return db.session.commit()
     except:
         db.session.rollback()
         return 'ERROR: Failed to delete the student'
@@ -74,11 +73,12 @@ def deleteStudent(studentId):
 
 
 def increaseKarmaScore(studentId):
+    student = getStudent(studentId)
     try:
-        student = getStudent(studentId)
-        student.karmaScore = student.karmaScore + 1
-        db.session.add(student)
-        db.session.commit()
+        if student:
+            student.karmaScore = student.karmaScore + 1
+            db.session.add(student)
+            return db.session.commit()
     except:
         db.session.rollback()
         return 'ERROR: Failed to increase karma score'
@@ -87,11 +87,13 @@ def increaseKarmaScore(studentId):
 
 
 def decreaseKarmaScore(studentId):
+    student = getStudent(studentId)
     try:
-        student = getStudent(studentId)
-        student.karmaScore = student.karmaScore - 1
-        db.session.add(student)
-        db.session.commit()
+        if student:
+            student = getStudent(studentId)
+            student.karmaScore = student.karmaScore - 1
+            db.session.add(student)
+            db.session.commit()
     except:
         db.session.rollback()
         return 'ERROR: Failed to decrease karma score'

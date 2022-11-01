@@ -69,7 +69,7 @@ class UsersIntegrationTests(unittest.TestCase):
 
 class StudentIntegrationTests(unittest.TestCase):
     def test_createStudent(self):
-        createStudent(studentId=1, firstname="john", lastname="doe",
+        student = createStudent(studentId=1, firstname="john", lastname="doe",
                       username="jonny", email="john@gmail.com")
         student = getStudent(1)
         assert student.username == "jonny"
@@ -81,7 +81,7 @@ class StudentIntegrationTests(unittest.TestCase):
                              "username": "jonny", "email": "john@gmail.com", "karmaScore": 0}], student_dict)
 
     def test_updateStudent(self):
-        createStudent(studentId=2, firstname="Harry", lastname="potter",
+        student =  createStudent(studentId=2, firstname="Harry", lastname="potter",
                       username="harrypot", email="harry@gmail.com")
         updateStudent(studentId=2, firstname="bob", lastname="potter",
                       username="harrypot", email="harry@gmail.com")
@@ -89,7 +89,7 @@ class StudentIntegrationTests(unittest.TestCase):
         assert student.firstname == "bob"
 
     def test_increaseKarmaScore(self):
-        createStudent(studentId=3, firstname="Henry", lastname="potter",
+        student =createStudent(studentId=3, firstname="Henry", lastname="potter",
                       username="henrypot", email="henry@gmail.com")
 
         student = getStudent(3)
@@ -101,7 +101,7 @@ class StudentIntegrationTests(unittest.TestCase):
         deleteStudent(3)
 
     def test_decreaseKarmaScore(self):
-        createStudent(studentId=4, firstname="Henry", lastname="potter",
+        student = createStudent(studentId=4, firstname="Henry", lastname="potter",
                       username="henrypot", email="henry@gmail.com")
         student = getStudent(4)
         score = student.karmaScore

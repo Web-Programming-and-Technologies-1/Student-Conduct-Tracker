@@ -152,7 +152,7 @@ def createDownvote(reviewId,studentId):
 def addStud():
   try:
       data = request.json
-      createStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
+      student = createStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
       return'PASS: Student created',200
   except:
       return'ERROR: API Failed to create new student',404

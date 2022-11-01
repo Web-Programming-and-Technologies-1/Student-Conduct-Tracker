@@ -26,7 +26,7 @@ def createReview(reviewId, reviewDetails, studentId, userId):
             db.session.commit()
             return review
     except IntegrityError:
-        db.session.rollback()
+            db.session.rollback()
     return None
 
 
@@ -44,12 +44,12 @@ def getAllReviews_toDict():
         return [review.toDict() for review in reviews]
     return None
 
-# Return a review using a specific Id
+# Return a review with a specific Id
 def getReview(reviewId):
     return Review.query.filter_by(reviewId=reviewId).first()
 
 # Get a review using a specific Id
-# Return the reviews in dictionary format or None otherwise
+# Return the review in dictionary format or None otherwise
 def getReview_toDict(reviewId):
     review = getReview(reviewId)
     if review:
@@ -85,7 +85,7 @@ def getAllReviewsByStaff_toDict(userId):
 
 # Get a review based on review ID
 # Return none if review not found
-# Updates the review details and the staff who updates
+# Updates the review details 
 # Returns the updated review
 def updateReview(reviewId, studentId, userId, reviewDetails):
     newReview = getReview(reviewId)
@@ -106,7 +106,7 @@ def updateReview(reviewId, studentId, userId, reviewDetails):
 
 # Get a review based n review ID
 # Return false if review not found
-# Deletes teh review if found and return true
+# Deletes the review if found and return true
 def deleteReview(reviewId):
     review = getReview(reviewId)
     try:

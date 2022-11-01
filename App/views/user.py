@@ -147,7 +147,7 @@ def createDownvote(reviewId,studentId):
   
 
 #add student  
-@user_views.route('/add', methods=['POST'])
+@user_views.route('/addstudent', methods=['POST'])
 @login_required
 def addStud():
   try:
@@ -158,7 +158,7 @@ def addStud():
       return'ERROR: API Failed to create new student',404
 
 #update student 
-@user_views.route('/update/<id>', methods=['PUT'])
+@user_views.route('/updatestudent/<id>', methods=['PUT'])
 @login_required
 def updateStud(id):
   try: 
@@ -194,7 +194,7 @@ def createRev():
     
 
 
-@user_views.route('/users', methods=['POST'])
+@user_views.route('/addusers', methods=['POST'])
 def addUser():
   try:
     data = request.get_json()

@@ -5,9 +5,6 @@ from flask_login import LoginManager, current_user, login_user, login_required, 
 from ..controllers.review import*
 from App.controllers import *
 
-
-
-
 from App.models import db , Student, User, Review
 
 from App.controllers import * 

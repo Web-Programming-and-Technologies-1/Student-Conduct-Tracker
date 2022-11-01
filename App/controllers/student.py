@@ -4,9 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 '''Create operations'''
 
-# Checks to verify that the staff exist within the system
-# Checks to verify that the student information exist within the system
-# Creates a review if both staff and student exist and None otherwise
+# Create a new student using the specified information
 def createStudent(studentId, firstname, lastname, username, email):
     student = Student(studentId=studentId, firstname=firstname,
                       lastname=lastname, username=username, email=email)
@@ -24,7 +22,7 @@ def createStudent(studentId, firstname, lastname, username, email):
 def getAllStudents():
     return Student.query.all()
 
-# Get all studnets from the database
+# Get all students from the database
 # Returns the students in Dictionary format if found or None otherwise  
 def getAllStudents_toDict():
     students = getAllStudents()

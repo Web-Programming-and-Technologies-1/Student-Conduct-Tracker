@@ -41,7 +41,7 @@ def test_authenticate():
 class UsersIntegrationTests(unittest.TestCase):
 
     def test_create_user(self):
-        create_user(userId=2, firstname="userbobby", lastname="bobby",
+        user = create_user(userId=2, firstname="userbobby", lastname="bobby",
                     username="babloo", email="bobby@gmail.com", password="bobbypass")
         user = get_user(2)
         assert user.username == "babloo"
@@ -52,7 +52,7 @@ class UsersIntegrationTests(unittest.TestCase):
                              "id": 2, "firstname": "userbobby", "lastname": "bobby", "username": "babloo", "email": "bobby@gmail.com"}], users_dict)
 
     def test_updateUser(self):
-        create_user(userId=3, firstname="john", lastname="doe",
+        user = create_user(userId=3, firstname="john", lastname="doe",
                     username="jonny", email="john@gmail.com", password="johnpass")
         updateUser(userId=3, firstname="updateTest", lastname="doe",
                    username="jonny", email="john@gmail.com", password="johnpass")

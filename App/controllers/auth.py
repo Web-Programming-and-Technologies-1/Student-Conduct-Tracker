@@ -1,32 +1,29 @@
-import flask_login
+# import flask_login
 from flask_jwt import JWT
 from App.models import User
 
-
-#Added error handling to the functions below provided within the MVC template
+#Authenicate a Staff based on the email and password provided
 def authenticate(email, password):
-    try:
-        user = User.query.filter_by(email=email).first()
-        if user and user.check_password(password):
-            
-            return user
-    except:
-        return'ERROR: Failed to authenticate user'
+    user = User.query.filter_by(email=email).first()
+    if user and user.check_password(password=password):
+        return user
+    return None
 
 # Payload is a dictionary which is passed to the function by Flask JWT
 def identity(payload):
-    try:
-        return User.query.get(payload['identity'])
-    except:
-        return 'ERROR: Failed to identify user'
+    user = User.query.get(payload['identity'])
+    if user:
+        return user
+    return None
 
+#Remember a user login details 
 def login_user(user, remember):
     try:
         return flask_login.login_user(user, remember=remember)
     except:
         return 'ERROR: Failed to remember user'
 
-
+#Allow user to logout of the system once logged in
 def logout_user():
     try:
         flask_login.logout_user()

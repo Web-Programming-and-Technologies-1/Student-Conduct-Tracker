@@ -122,9 +122,9 @@ class StudentIntegrationTests(unittest.TestCase):
 class ReviewIntegrationTests(unittest.TestCase):
 
     def test_createReview(self):
-        createReview(reviewId=1, reviewDetails="this is an integration test",
+        review = createReview(reviewId=1, reviewDetails="this is an integration test",
                      studentId=1, userId=1)
-        review = getReview(reviewId=1)
+        
         assert review.reviewDetails == "this is an integration test"
         deleteReview(1)
 

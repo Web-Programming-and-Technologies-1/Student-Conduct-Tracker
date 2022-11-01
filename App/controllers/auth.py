@@ -18,17 +18,13 @@ def identity(payload):
 
 #Remember a user login details 
 def login_user(user, remember):
-    try:
-        return flask_login.login_user(user, remember=remember)
-    except:
-        return 'ERROR: Failed to remember user'
+    return flask_login.login_user(user, remember=remember)
+    
 
 #Allow user to logout of the system once logged in
 def logout_user():
-    try:
-        flask_login.logout_user()
-    except:
-        return 'ERROR: Failed to log out users'
+   return flask_login.logout_user()
+    
 
 def setup_jwt(app):
     return JWT(app, authenticate, identity)

@@ -126,8 +126,8 @@ def getKarma(id):
 @login_required
 def createUpvote(reviewId,studentId): 
   try:
-    upvoteReview(reviewId)
-    increaseKarmaScore(studentId)
+    review = upvoteReview(reviewId)
+    karmaScore = increaseKarmaScore(studentId)
     return 'PASS: Review Upvoted and Karma Score Increased', 200
   except:
     return'ERROR: API Failed to upvote review and increase student karma score', 404
@@ -136,8 +136,8 @@ def createUpvote(reviewId,studentId):
 @login_required
 def createDownvote(reviewId,studentId): 
   try:
-    downvoteReview(reviewId)
-    decreaseKarmaScore(studentId)
+    review = downvoteReview(reviewId)
+    karmaScore = decreaseKarmaScore(studentId)
     return 'PASS: Review Downvoted and Karma Score Decreased', 200
   except:
     return'ERROR: API Failed to downvote review and decrease student karma score', 404

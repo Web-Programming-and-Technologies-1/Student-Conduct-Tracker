@@ -5,9 +5,6 @@ from flask_login import LoginManager, current_user, login_user, login_required, 
 from ..controllers.review import*
 from App.controllers import *
 
-
-
-
 from App.models import db , Student, User, Review
 
 from App.controllers import * 
@@ -129,8 +126,8 @@ def getKarma(id):
 @login_required
 def createUpvote(reviewId,studentId): 
   try:
-    upvoteReview(reviewId)
-    increaseKarmaScore(studentId)
+    review = upvoteReview(reviewId)
+    karmaScore = increaseKarmaScore(studentId)
     return 'PASS: Review Upvoted and Karma Score Increased', 200
   except:
     return'ERROR: API Failed to upvote review and increase student karma score', 404
@@ -139,8 +136,8 @@ def createUpvote(reviewId,studentId):
 @login_required
 def createDownvote(reviewId,studentId): 
   try:
-    downvoteReview(reviewId)
-    decreaseKarmaScore(studentId)
+    review = downvoteReview(reviewId)
+    karmaScore = decreaseKarmaScore(studentId)
     return 'PASS: Review Downvoted and Karma Score Decreased', 200
   except:
     return'ERROR: API Failed to downvote review and decrease student karma score', 404
@@ -152,7 +149,7 @@ def createDownvote(reviewId,studentId):
 def addStud():
   try:
       data = request.json
-      createStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
+      student = createStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
       return'PASS: Student created',200
   except:
       return'ERROR: API Failed to create new student',404

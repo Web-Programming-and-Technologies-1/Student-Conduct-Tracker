@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, jsonify, send_from_directory, flash, json, jsonify, redirect
 from flask_jwt import jwt_required, JWT, current_identity
-from flask import flask, request, url_for, g
+from flask import Flask, request, url_for, g
 from flask_login import LoginManager, current_user, login_user, login_required, login_manager
 from ..controllers.review import*
 from App.controllers import *
@@ -64,17 +64,19 @@ def homepage():
 @user_views.route('/signup', methods=['POST'])
 def signupUser():
   userData = request.get_json()
-  val= create_user(userID= userData['userID'], firstname= userData['firstname'], lastname= userData['lastname'], username= userData['username'], email= userData['email'], password= userData['password'])
-  if val == 201:
-    return render_template('login.html')
+  val= create_user(userId= userData['userId'], firstname= userData['firstname'], lastname= userData['lastname'], username= userData['username'], email= userData['email'], password= userData['password'])
+  
+  if val == 'ERROR: Failed to create new staff':
+    return "ERROR: User failed sign up"
   else:
-    return render_template('signup.html')
+    return json.dumps(val.toDict())
 
 
 @user_views.route('/login', methods=['POST'])
 def loginUser():
   userData = request.get_json()
   user= authenticate(email = userData['email'], password= userData['password'])
+  
   if user == None:
     return 'ERROR: User login failed'
   else:

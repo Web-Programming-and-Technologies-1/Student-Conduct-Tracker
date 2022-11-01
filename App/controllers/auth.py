@@ -11,7 +11,7 @@ def authenticate(email, password):
             
             return user
     except:
-        return'ERROR: Failed to authenticate user', 401
+        return'ERROR: Failed to authenticate user'
 
 # Payload is a dictionary which is passed to the function by Flask JWT
 def identity(payload):
@@ -30,7 +30,6 @@ def login_user(user, remember):
 def logout_user():
     try:
         flask_login.logout_user()
-        return 'SUCCESS: Logged out user'
     except:
         return 'ERROR: Failed to log out users'
 

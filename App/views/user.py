@@ -65,18 +65,16 @@ def homepage():
 def signupUser():
   userData = request.get_json()
   val= create_user(userId= userData['userId'], firstname= userData['firstname'], lastname= userData['lastname'], username= userData['username'], email= userData['email'], password= userData['password'])
-  
-  if val == 'ERROR: Failed to create new staff':
+  if val == None:
     return "ERROR: User failed sign up"
   else:
-    return json.dumps(val.toDict())
+    return val.toDict()
 
 
 @user_views.route('/login', methods=['POST'])
 def loginUser():
   userData = request.get_json()
   user= authenticate(email = userData['email'], password= userData['password'])
-  
   if user == None:
     return 'ERROR: User login failed'
   else:
@@ -208,8 +206,8 @@ def addUser():
 @user_views.route('/viewusers', methods=['GET'])
 def getUser():
   result = []
-  user = get_all_users_json()
-  return user 
+  user = get_all_users_toDict()
+  return json.dumps(user)
 
 @user_views.route('/getallreviews', methods=['GET'])
 @login_required

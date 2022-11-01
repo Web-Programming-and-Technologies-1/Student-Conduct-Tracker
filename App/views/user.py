@@ -1,7 +1,11 @@
-from flask import Blueprint, render_template, jsonify, request, send_from_directory
-from flask_jwt import jwt_required
+from flask import Blueprint, render_template, jsonify, send_from_directory, flash, json, jsonify, redirect
+from flask_jwt import jwt_required, JWT, current_identity
+from flask import flask, request, url_for, g
+from flask_login import LoginManager, current_user, login_user, login_required, login_manager
+from ..controllers.review import*
+from App.controllers import *
 
-import json
+
 
 
 from App.models import db , Student, User, Review
@@ -53,8 +57,41 @@ def static_user_page():
 
 
 ##
-@user_views.route('/', methods=['GET'])
-@jwt_required()
+@user_views.route('/') ##home
+def homepage():
+  return render_template('index.html')
+
+@user_views.route('/signup', methods=['POST'])
+def signupUser():
+  userData = request.get_json()
+  val= create_user(userID= userData['userID'], firstname= userData['firstname'], lastname= userData['lastname'], username= userData['username'], email= userData['email'], password= userData['password'])
+  if val == 201:
+    return render_template('login.html')
+  else:
+    return render_template('signup.html')
+
+
+@user_views.route('/login', methods=['POST'])
+def loginUser():
+  userData = request.get_json()
+  user= authenticate(email = userData['email'], password= userData['password'])
+  if user == None:
+    return 'ERROR: User login failed'
+  else:
+    login_user(user, True)
+    return 'SUCCESS: User logged in successfully'
+
+    
+@user_views.route('/logout', methods=['GET'])
+@login_required
+def logout():
+  logout_user()
+  flash('Logged Out!')
+  return render_template('login.html')
+
+
+@user_views.route('/allstudents', methods=['GET'])
+@login_required
 def getallstudents():
   result = []
   students = getAllStudents()
@@ -69,7 +106,7 @@ def getallstudents():
 
 #search students
 @user_views.route('/searchstudent/<id>', methods=['GET'])
-@jwt_required()
+@login_required
 def searchStudent(id): 
   try:
     student = getStudent(id)
@@ -79,7 +116,7 @@ def searchStudent(id):
 
 #karma 
 @user_views.route('/karma/<id>', methods=['GET'])
-@jwt_required()
+@login_required
 def getKarma(id): 
   try:
     student = getStudent(id)
@@ -89,7 +126,7 @@ def getKarma(id):
     return'ERROR: API Failed to get student karma score', 404
 
 @user_views.route('/upvote/<reviewId>/<studentId>', methods=['POST'])
-@jwt_required()
+@login_required
 def createUpvote(reviewId,studentId): 
   try:
     upvoteReview(reviewId)
@@ -99,7 +136,7 @@ def createUpvote(reviewId,studentId):
     return'ERROR: API Failed to upvote review and increase student karma score', 404
 
 @user_views.route('/downvote/<reviewId>/<studentId>', methods=['POST'])
-@jwt_required()
+@login_required
 def createDownvote(reviewId,studentId): 
   try:
     downvoteReview(reviewId)
@@ -111,7 +148,7 @@ def createDownvote(reviewId,studentId):
 
 #add student  
 @user_views.route('/add', methods=['POST'])
-@jwt_required()
+@login_required
 def addStud():
   try:
       data = request.json
@@ -122,7 +159,7 @@ def addStud():
 
 #update student 
 @user_views.route('/update/<id>', methods=['PUT'])
-@jwt_required()
+@login_required
 def updateStud(id):
   try: 
     student = Student.query.filter_by(studentId=id).first()
@@ -146,7 +183,7 @@ def updateStud(id):
 
 #add a review 
 @user_views.route('/addreview', methods=['POST'])
-@jwt_required()
+@login_required
 def createRev():
     try:
       data = request.get_json()
@@ -173,7 +210,7 @@ def getUser():
   return user 
 
 @user_views.route('/getallreviews', methods=['GET'])
-@jwt_required()
+@login_required
 def getallreviews():
   result = []
   reviews = getAllReviews()

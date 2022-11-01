@@ -14,7 +14,8 @@ def create_user(userId, firstname, lastname, username, email, password):
             db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        return 'ERROR: Failed to create new staff'
+        return 'ERROR: Failed to create new staff', 401
+    return 'SUCCESS: User created!', 201
 
 # Read operations
 
@@ -50,7 +51,8 @@ def updateUser(userId, username, firstname, lastname, email, password):
             return db.session.commit()
     except:
         db.session.rollback()
-        return 'ERROR: Failed to update the staff '
+        return 'ERROR: Failed to update the staff ',401
+    return 'SUCCESS: Updated user successfully', 201
 
 # Delete operations
 
@@ -64,4 +66,5 @@ def deleteUser(userId):
             db.session.commit()
     except:
         db.session.rollback()
-        return 'ERROR: Failed to delete the student'
+        return 'ERROR: Failed to delete the student', 401
+    return 'SUCCESS: Deleted user!', 201

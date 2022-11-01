@@ -8,9 +8,10 @@ def authenticate(email, password):
     try:
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
+            
             return user
     except:
-        return'ERROR: Failed to authenticate user'
+        return'ERROR: Failed to authenticate user', 401
 
 # Payload is a dictionary which is passed to the function by Flask JWT
 def identity(payload):
@@ -29,6 +30,7 @@ def login_user(user, remember):
 def logout_user():
     try:
         flask_login.logout_user()
+        return 'SUCCESS: Logged out user'
     except:
         return 'ERROR: Failed to log out users'
 

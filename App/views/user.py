@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, jsonify, request, send_from_directory
 from flask_jwt import jwt_required
+from flask import Flask
+from flask_login import login_required, LoginManager, current_user, login_user, login_manager
 import json
 
 
@@ -52,7 +54,31 @@ def static_user_page():
 
 
 ##
-@user_views.route('/', methods=['GET'])
+@user_views.route('/') ##home
+def homepage():
+  return render_template('index.html')
+
+@user_views.route('/signup', methods=['POST'])
+def signupUser():
+  userData = request.get_json()
+  val= create_user(userId= userData['userId'], firstname= userData['firstname'], lastname= userData['lastname'], username= userData['username'], email= userData['email'], password= userData['password'])
+  if val == None:
+    return "ERROR: User failed sign up"
+  else:
+    return val.toDict()
+
+@user_views.route('/login', methods=['POST'])
+def loginUser():
+  userData = request.get_json()
+  user= authenticate(email = userData['email'], password= userData['password'])
+  if user == None:
+    return 'ERROR: User login failed'
+  else:
+    login_user(user, True)
+    return 'SUCCESS: User logged in successfully'
+
+
+@user_views.route('/getallstudents', methods=['GET'])
 def getallstudents():
   result = []
   students = getAllStudents()
@@ -104,14 +130,16 @@ def createDownvote(reviewId,studentId):
   
 
 #add student  
-@user_views.route('/add', methods=['POST'])
+@user_views.route('/addStudent', methods=['POST'])
+@login_required
 def addStud():
-  try:
-      data = request.json
-      student = createStudent(data['studentId'], data['firstname'], data['lastname'], data['username'], data['email'])
-      return'PASS: Student created',200
-  except:
-      return'ERROR: API Failed to create new student',404
+  studentData = request.get_json()
+  val= createStudent(studentId= studentData['studentId'], firstname= studentData['firstname'], lastname = studentData['lastname'], username = studentData['username'], email= studentData['email'])
+  if val == None:
+      return "ERROR: Student failed to be added"
+  else:
+      return val.toDict()
+ 
 
 #update student 
 @user_views.route('/update/<id>', methods=['PUT'])

@@ -14,8 +14,7 @@ def create_user(userId, firstname, lastname, username, email, password):
         return newUser
     except IntegrityError:
         db.session.rollback()
-        return 'ERROR: Failed to create new staff'
-
+    return None   
 # Read operations
 
 '''Read operations'''

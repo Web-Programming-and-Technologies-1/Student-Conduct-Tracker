@@ -116,4 +116,4 @@ def decreaseKarmaScore(studentId):
             return student
     except:
         db.session.rollback()
-    return None
+

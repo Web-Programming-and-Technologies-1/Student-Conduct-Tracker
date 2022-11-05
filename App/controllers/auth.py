@@ -10,10 +10,12 @@ from App.controllers import *
 
 #Authenicate a Staff based on the email and password provided
 def authenticate(email, password):
-    user = User.query.filter_by(email=email).first()
-    if user and user.check_password(password=password):
-        return user
-    return None
+    try:
+        user = User.query.filter_by(email=email).first()
+        if user and user.check_password(password):
+            return user
+    except:
+        return'ERROR: Failed to authenticate user'
 
 # Payload is a dictionary which is passed to the function by Flask JWT
 def identity(payload):
@@ -29,8 +31,10 @@ def login_user(user, remember):
 
 #Allow user to logout of the system once logged in
 def logout_user():
-   return flask_login.logout_user()
-    
+    try:
+        flask_login.logout_user()
+    except:
+        return 'ERROR: Failed to log out users'
 
 def setup_jwt(app):
     return JWT(app, authenticate, identity)

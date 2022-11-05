@@ -8,7 +8,8 @@ from flask_login import LoginManager, current_user, login_user, login_required, 
 from ..controllers.review import*
 from App.controllers import *
 
-#Authenicate a Staff based on the email and password provided
+
+#Added error handling to the functions below provided within the MVC template
 def authenticate(email, password):
     try:
         user = User.query.filter_by(email=email).first()

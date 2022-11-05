@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, jsonify, request, send_from_directory
 from flask_jwt import jwt_required
-
 import json
 
 
@@ -68,7 +67,6 @@ def getallstudents():
 
 #search students
 @user_views.route('/searchstudent/<id>', methods=['GET'])
-@jwt_required()
 def searchStudent(id): 
   try:
     student = getStudent(id)
@@ -78,7 +76,6 @@ def searchStudent(id):
 
 #karma 
 @user_views.route('/karma/<id>', methods=['GET'])
-@jwt_required()
 def getKarma(id): 
   try:
     student = getStudent(id)
@@ -88,7 +85,6 @@ def getKarma(id):
     return'ERROR: API Failed to get student karma score', 404
 
 @user_views.route('/upvote/<reviewId>/<studentId>', methods=['POST'])
-@jwt_required()
 def createUpvote(reviewId,studentId): 
   try:
     review = upvoteReview(reviewId)
@@ -98,7 +94,6 @@ def createUpvote(reviewId,studentId):
     return'ERROR: API Failed to upvote review and increase student karma score', 404
 
 @user_views.route('/downvote/<reviewId>/<studentId>', methods=['POST'])
-@jwt_required()
 def createDownvote(reviewId,studentId): 
   try:
     review = downvoteReview(reviewId)
@@ -143,7 +138,6 @@ def updateStud(id):
 
 #add a review 
 @user_views.route('/addreview', methods=['POST'])
-@jwt_required()
 def createRev():
     try:
       data = request.get_json()
@@ -170,7 +164,6 @@ def getUser():
   return json.dumps(user)
 
 @user_views.route('/getallreviews', methods=['GET'])
-@jwt_required()
 def getallreviews():
   result = []
   reviews = getAllReviews()

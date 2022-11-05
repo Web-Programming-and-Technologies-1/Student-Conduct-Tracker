@@ -63,7 +63,7 @@ def create_app(config={}):
 app = create_app()
 migrate = get_migrate(app)
 
-@app.route('/')
+"""@app.route('/')
 def index():
   return render_template('index.html')
 
@@ -84,4 +84,4 @@ def signupAction():
     flash('Account Created!')# send message
     return redirect(url_for('index'))# redirect to login page
   flash('Error invalid input!')
-  return redirect(url_for('signup'))
+  return redirect(url_for('signup'))"""

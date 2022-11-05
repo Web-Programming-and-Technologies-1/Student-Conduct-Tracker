@@ -39,8 +39,8 @@ def get_user_page():
 @user_views.route('/api/users')
 def client_app():
   try:
-    users = get_all_users_json()
-    return jsonify(users), 200
+    users = get_all_users_toDict()
+    return json.dumps(users), 200
   except:
     return'ERROR: API Failed to get all user',404
 
@@ -55,8 +55,8 @@ def static_user_page():
 
 ##
 @user_views.route('/') ##home
-def homepage():
-  return render_template('index.html')
+def home():
+    return "home"
 
 @user_views.route('/signup', methods=['POST'])
 def signupUser():
@@ -88,7 +88,7 @@ def logout():
 
 
 @user_views.route('/allstudents', methods=['GET'])
-@login_required
+#@login_required
 def getallstudents():
   result = []
   students = getAllStudents()

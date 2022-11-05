@@ -130,15 +130,16 @@ def createDownvote(reviewId,studentId):
   
 
 #add student  
-@user_views.route('/addStudent', methods=['POST'])
-@login_required
+@user_views.route('/addstudent', methods=['POST'])
+#@login_required
 def addStud():
   studentData = request.get_json()
   val= createStudent(studentId= studentData['studentId'], firstname= studentData['firstname'], lastname = studentData['lastname'], username = studentData['username'], email= studentData['email'])
   if val == None:
       return "ERROR: Student failed to be added"
   else:
-      return val.toDict()
+      return "PASS: Student created"
+      #return val.toDict()
  
 
 #update student 

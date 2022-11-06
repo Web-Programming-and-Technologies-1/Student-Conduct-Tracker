@@ -130,7 +130,7 @@ def createDownvote(reviewId,studentId):
   
 
 #add student  
-@user_views.route('/addstudent', methods=['POST'])
+@user_views.route('/add', methods=['POST'])
 #@login_required
 def addStud():
   studentData = request.get_json()
